@@ -3,6 +3,8 @@ require 'yaml'
 module SuperStack
   class Layer < Hash
 
+    include Comparable
+
     DEFAULT_LAYER_NAME = 'Unknown layer'
 
     attr_accessor :priority
@@ -23,6 +25,16 @@ module SuperStack
 
     def loaded_from_file?
       !@file_name.nil?
+    end
+
+    def <=>(other)
+      # For priorities, the smallest the higher
+      self.priority <=> other.priority
+    end
+
+    def inspect
+      "name: #{name}, priority: #{priority}, #{super}"
+
     end
 
     private

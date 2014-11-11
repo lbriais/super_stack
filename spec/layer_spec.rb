@@ -23,6 +23,13 @@ describe SuperStack::Layer do
     expect(subject.respond_to? :priority=).to be_truthy
   end
 
+  it 'should be comparable by priority' do
+    other = SuperStack::Layer.new
+    subject.priority = 1
+    other.priority = 2
+    expect( subject < other).to be_truthy
+  end
+
   context 'when loading from a YAML file' do
 
     def file_from_type(file_type)
