@@ -6,8 +6,9 @@ describe SuperStack::Layer do
   let(:layer_file_type_1) {File.expand_path '../../test/layer_content_type_1.yml', __FILE__}
   let(:layer_file_type_2) {File.expand_path '../../test/layer_content_type_2.yml', __FILE__}
   let(:layer_file_type_3) {File.expand_path '../../test/layer_content_type_3.yml', __FILE__}
+  let(:layer_file_type_empty) {File.expand_path '../../test/layer_content_empty.yml', __FILE__}
 
-  let(:layer_type_set) {[layer_file_type_1, layer_file_type_2, layer_file_type_3]}
+  let(:layer_type_set) {[layer_file_type_1, layer_file_type_2, layer_file_type_3, layer_file_type_empty]}
 
   it 'has a name' do
     expect(subject.respond_to? :name).to be_truthy

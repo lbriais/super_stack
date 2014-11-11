@@ -1,9 +1,3 @@
-stupid-stuff: oh yeah
-
-an-array:
-  - item 1
-  - item 2
-  - a-hash:
-    pipo: bimbo
-    bozo: the clown
-
+- One
+- two
+- three

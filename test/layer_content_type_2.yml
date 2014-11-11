@@ -1,1 +1,9 @@
-pipo: bimbo
+--- 
+an-array: 
+  - "item 1"
+  - "item 2"
+  - 
+    a-hash: ~
+    bozo: "the clown"
+    pipo: bimbo
+stupid-stuff: "oh yeah"

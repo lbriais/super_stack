@@ -25,6 +25,8 @@ module SuperStack
 
     def load_from_yaml(file_name)
       Hash[YAML::load(open(file_name)).map { |k, v| [k.to_sym, v] }]
+    rescue  NoMethodError
+      # Empty file...
     end
 
 
