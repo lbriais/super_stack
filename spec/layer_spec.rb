@@ -24,16 +24,15 @@ describe SuperStack::Layer do
   end
 
   context 'when loading from a YAML file' do
-    let(:test_set) do
-      %w(empty standard containing_an_array well_formatted).map do |file_type|
-        File.expand_path "../../test/layer_content_type_#{file_type}.yml", __FILE__
-      end
+
+    def file_from_type(file_type)
+      File.expand_path("../../test/layer_content_type_#{file_type}.yml", __FILE__)
     end
 
     %w(empty standard containing_an_array well_formatted).each do |file_type|
       it "should allow #{file_type} content type" do
         expect {
-          subject.load File.expand_path("../../test/layer_content_type_#{file_type}.yml", __FILE__)
+          subject.load file_from_type file_type
         }.not_to raise_error
       end
     end
