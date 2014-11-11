@@ -3,12 +3,6 @@ require 'spec_helper'
 describe SuperStack::Layer do
 
   subject {SuperStack::Layer.new}
-  let(:layer_file_type_1) {File.expand_path '../../test/layer_content_type_1.yml', __FILE__}
-  let(:layer_file_type_2) {File.expand_path '../../test/layer_content_type_2.yml', __FILE__}
-  let(:layer_file_type_3) {File.expand_path '../../test/layer_content_type_3.yml', __FILE__}
-  let(:layer_file_type_empty) {File.expand_path '../../test/layer_content_empty.yml', __FILE__}
-
-  let(:layer_type_set) {[layer_file_type_1, layer_file_type_2, layer_file_type_3, layer_file_type_empty]}
 
   it 'has a name' do
     expect(subject.respond_to? :name).to be_truthy
@@ -29,12 +23,21 @@ describe SuperStack::Layer do
     expect(subject.respond_to? :priority=).to be_truthy
   end
 
-  it 'should be loadable from a YAML file' do
-    layer_type_set.each do |file_name|
-      expect {
-        subject.load file_name
-      }.not_to raise_error
+  context 'when loading from a YAML file' do
+    let(:test_set) do
+      %w(empty standard containing_an_array well_formatted).map do |file_type|
+        File.expand_path "../../test/layer_content_type_#{file_type}.yml", __FILE__
+      end
     end
+
+    %w(empty standard containing_an_array well_formatted).each do |file_type|
+      it "should allow #{file_type} content type" do
+        expect {
+          subject.load File.expand_path("../../test/layer_content_type_#{file_type}.yml", __FILE__)
+        }.not_to raise_error
+      end
+    end
+
   end
 
 
