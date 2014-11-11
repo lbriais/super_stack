@@ -17,16 +17,23 @@ module SuperStack
     end
 
     def load(file_name, type = :yaml)
+      raise 'Invalid file' unless File.readable? file_name
       load_from_yaml file_name if type == :yaml
-      @file_name = file_name
+    end
+
+    def loaded_from_file?
+      !@file_name.nil?
     end
 
     private
 
     def load_from_yaml(file_name)
-      Hash[YAML::load(open(file_name)).map { |k, v| [k.to_sym, v] }]
-    rescue  NoMethodError
-      # Empty file...
+      begin
+        Hash[YAML::load(open(file_name)).map { |k, v| [k.to_sym, v] }]
+      rescue  NoMethodError
+        # Empty file...
+      end
+      @file_name = file_name
     end
 
 
