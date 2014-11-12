@@ -33,7 +33,7 @@ describe SuperStack::Manager do
   end
 
   it 'should not accept stupid policies' do
-    expect {subject.merge_policy = :pipo}.to raise_error
+    expect {subject.merge_policy = :foo}.to raise_error
   end
 
 
