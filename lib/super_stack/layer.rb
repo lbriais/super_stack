@@ -10,6 +10,10 @@ module SuperStack
     attr_accessor :priority
     attr_reader :file_name
 
+    def priority=(priority)
+      raise 'invalid priority' unless priority.is_a? Numeric
+    end
+
     def name=(name)
       @name = name.to_s
     end
