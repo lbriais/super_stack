@@ -7,7 +7,7 @@ describe SuperStack::MergePolicies do
   it 'should have merge policies' do
     policies = subject.list
     expect( policies.is_a? Array).to be_truthy
-    expect( policies.count > 0).to be_truthy
+    expect( policies.count == 2).to be_truthy
   end
 
 

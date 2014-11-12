@@ -1,4 +1,5 @@
 require 'super_stack/merge_policies/override_policy'
+require 'super_stack/merge_policies/standard_merge_policy'
 
 
 module SuperStack
