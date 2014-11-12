@@ -5,6 +5,10 @@ module SuperStack
 
     attr_reader :layers, :merge_policy
 
+    def []
+      nil
+    end
+
     def initialize
       @layers = {}
     end
