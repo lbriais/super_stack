@@ -30,7 +30,7 @@ describe SuperStack::Layer do
     expect( subject < other).to be_truthy
   end
 
-  context 'when loading from a YAML file' do
+  context 'when loaded from a YAML file' do
 
     def file_from_type(file_type)
       File.expand_path("../../test/layer_content_type_#{file_type}.yml", __FILE__)
