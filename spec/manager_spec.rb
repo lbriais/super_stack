@@ -19,6 +19,7 @@ describe SuperStack::Manager do
     subject.add_layer l1
 
     expect(subject.to_a[0] == l1).to be_truthy
+    expect(subject.to_a[1] == l2).to be_truthy
 
   end
 

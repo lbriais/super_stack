@@ -7,11 +7,11 @@ module SuperStack
 
     DEFAULT_LAYER_NAME = 'Unknown layer'
 
-    attr_accessor :priority
-    attr_reader :file_name
+    attr_reader :file_name, :priority
 
     def priority=(priority)
       raise 'invalid priority' unless priority.is_a? Numeric
+      @priority = priority
     end
 
     def name=(name)
