@@ -3,7 +3,7 @@ module SuperStack
 
     DEFAULT_INTERVAL = 10
 
-    attr_reader :layers
+    attr_reader :layers, :merge_policy
 
     def initialize
       @layers = {}
@@ -18,6 +18,15 @@ module SuperStack
       raise 'Layer already existing' if layers.keys.include? layer.name
       layer.priority = get_unused_priority if layer.priority.nil?
       layers[layer.name] = layer
+    end
+
+    def merge_policy=(policy)
+      raise "Invalid merge policy #{policy}" unless SuperStack::MergePolicies.list.include? policy
+      @merge_policy = policy
+    end
+
+    def ready?
+      !@merge_policy.nil?
     end
 
     private

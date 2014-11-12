@@ -22,6 +22,19 @@ describe SuperStack::Manager do
     expect(subject.to_a[1] == l2).to be_truthy
   end
 
+  it 'should have a policy' do
+    expect( subject.respond_to? :merge_policy).to be_truthy
+  end
+
+  it 'should not be ready unless a merge policy is set' do
+    expect( subject.ready?).to be_falsey
+    subject.merge_policy = SuperStack::MergePolicies.list[0]
+    expect( subject.ready?).to be_truthy
+  end
+
+  it 'should not accept stupid policies' do
+    expect {subject.merge_policy = :pipo}.to raise_error
+  end
 
 
 
