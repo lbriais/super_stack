@@ -7,7 +7,7 @@ describe SuperStack::Manager do
     m = SuperStack::Manager.new
     layer1 = SuperStack::Layer.new
     layer1.name = :layer1
-    layer1.load(File.expand_path '../../test/layer_content_type_standard.yml', __FILE__)
+    layer1.load(File.expand_path('../../test/layer_content_type_standard.yml', __FILE__))
     m.add_layer layer1
     layer2 = SuperStack::Layer.new
     layer2.name = :layer2
@@ -51,11 +51,11 @@ describe SuperStack::Manager do
 
   context 'when ready' do
 
-
-    it 'should provide a merged view of the layers according to the merge policy chosen' do
-      SuperStack::MergePolicies.list.each do |policy|
+    SuperStack::MergePolicies.list.each do |policy|
+      it "should provide a merged view of the layers according to the merge policy: #{policy}" do
         two_layers_subject.merge_policy = policy
         expect(two_layers_subject[].is_a? Hash).to be_truthy
+        puts "#{policy} => #{two_layers_subject[].pretty_inspect}"
       end
     end
 

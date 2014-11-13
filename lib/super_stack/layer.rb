@@ -27,7 +27,7 @@ module SuperStack
       load_from_yaml file_name if type == :yaml
     end
 
-    def loaded_from_file?
+    def has_file?
       !@file_name.nil?
     end
 
@@ -45,7 +45,8 @@ module SuperStack
 
     def load_from_yaml(file_name)
       begin
-        Hash[YAML::load(open(file_name)).map { |k, v| [k.to_sym, v] }]
+        self.replace Hash[YAML::load(File.open(file_name)).map { |k, v| [k.to_sym, v] }]
+
       rescue  NoMethodError
         # Empty file...
       end

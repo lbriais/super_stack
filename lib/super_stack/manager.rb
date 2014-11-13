@@ -5,7 +5,7 @@ module SuperStack
 
     attr_reader :layers, :merge_policy
 
-    def []
+    def [](filter=nil)
       raise 'Manager not ready (no merge policy specified)' unless ready?
       reversed_layers = to_a.reverse
       return [] if reversed_layers.empty?
@@ -14,7 +14,11 @@ module SuperStack
       res = reversed_layers.inject(first_layer) do |stack, layer|
         merge_policy.merge stack, layer
       end
-      puts res
+      if filter.nil?
+        res
+      else
+        res[filter]
+      end
     end
 
     def initialize

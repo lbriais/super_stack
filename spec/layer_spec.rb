@@ -41,7 +41,7 @@ describe SuperStack::Layer do
         expect {
           subject.load file_from_type file_type
         }.not_to raise_error
-        expect( subject.loaded_from_file?).to be_truthy
+        expect( subject.has_file?).to be_truthy
       end
     end
 
