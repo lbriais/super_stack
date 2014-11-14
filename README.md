@@ -1,6 +1,8 @@
 # SuperStack
 
-TODO: Write a gem description
+The purpose of this gem is to provide a simple way to manage the merge of different
+hashes (layers).
+It offers different merge policies.
 
 ## Installation
 
