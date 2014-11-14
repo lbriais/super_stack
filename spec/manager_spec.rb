@@ -39,26 +39,32 @@ describe SuperStack::Manager do
 
   context 'when ready' do
 
-    subject {
-      m = SuperStack::Manager.new
-      layer1 = SuperStack::Layer.new
-      layer1.name = :layer1
-      layer1.load(File.expand_path('../../test/layer_content_type_standard.yml', __FILE__))
-      m.add_layer layer1
-      layer2 = SuperStack::Layer.new
-      layer2.name = :layer2
-      layer2.load(File.expand_path'../../test/layer_content_type_containing_an_array.yml', __FILE__)
-      m.add_layer layer2
-      m
-    }
+    def file_from_layer(layer_number)
+      File.expand_path("../../test/stacked_layer_#{layer_number}.yml", __FILE__)
+    end
+
+    (1..4).each do |layer_number|
+      let("layer#{layer_number}".to_sym) {
+        file_name = file_from_layer layer_number
+        layer = SuperStack::Layer.new
+        layer.load file_name
+        layer.name = "layer#{layer_number}"
+        layer
+      }
+    end
 
     SuperStack::MergePolicies.list.each do |policy|
       it "should provide a merged view of the layers according to the merge policy: #{policy}" do
+        subject.add_layer layer1
+        subject.add_layer layer2
+        subject.add_layer layer3
+        subject.add_layer layer4
         subject.merge_policy = policy
         expect(subject[].is_a? Hash).to be_truthy
-        # puts "#{policy} => #{subject[].pretty_inspect}"
+        expect(subject[:layer] == 'four').to be_truthy
       end
     end
+
 
 
 

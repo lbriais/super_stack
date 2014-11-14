@@ -7,11 +7,11 @@ module SuperStack
 
     def [](filter=nil)
       raise 'Manager not ready (no merge policy specified)' unless ready?
-      reversed_layers = to_a.reverse
-      return [] if reversed_layers.empty?
-      return reversed_layers[0] if reversed_layers.count == 1
-      first_layer = reversed_layers.shift
-      res = reversed_layers.inject(first_layer) do |stack, layer|
+      layers = to_a
+      return [] if layers.empty?
+      return layers[0] if layers.count == 1
+      first_layer = layers.shift
+      res = layers.inject(first_layer) do |stack, layer|
         merge_policy.merge stack, layer
       end
       if filter.nil?
