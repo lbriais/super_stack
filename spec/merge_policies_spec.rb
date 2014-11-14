@@ -19,7 +19,7 @@ describe SuperStack::MergePolicies do
   it 'should have merge policies' do
     policies = subject.list
     expect( policies.is_a? Array).to be_truthy
-    expect( policies.count == 2).to be_truthy
+    expect( policies.count == 3).to be_truthy
   end
 
   context 'when dealing with override policy' do
@@ -47,4 +47,19 @@ describe SuperStack::MergePolicies do
     end
 
   end
+
+  context 'when dealing with full merge policy' do
+
+    subject {SuperStack::MergePolicies::FullMergePolicy}
+
+    it 'should be merged at all levels level' do
+      merged_hashs = subject.merge(layer1, layer2)
+      expect( merged_hashs[:layer] == 'two').to be_truthy
+      expect( merged_hashs[:from_layer_1]['stupid-data'] == 'stupid in one').to be_truthy
+      expect( merged_hashs[:from_layer_2]['stupid-data'] == 'stupid in two').to be_truthy
+      expect( merged_hashs[:'to-be-merged'] == layer2[:'to-be-merged']).to be_truthy
+    end
+
+  end
+
 end
