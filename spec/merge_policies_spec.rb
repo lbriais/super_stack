@@ -57,7 +57,7 @@ describe SuperStack::MergePolicies do
       expect( merged_hashs[:layer] == 'two').to be_truthy
       expect( merged_hashs[:from_layer_1]['stupid-data'] == 'stupid in one').to be_truthy
       expect( merged_hashs[:from_layer_2]['stupid-data'] == 'stupid in two').to be_truthy
-      expect( merged_hashs[:'to-be-merged'] == layer2[:'to-be-merged']).to be_truthy
+      expect( merged_hashs[:'to-be-merged'] == layer2[:'to-be-merged']).to be_falsey
     end
 
   end

@@ -4,8 +4,15 @@ module SuperStack
   module MergePolicies
     module FullMergePolicy
 
+      module DeepMergeWrapper
+        def deep_merge!(source)
+          DeepMerge::deep_merge!(source, self, {})
+        end
+      end
+
       def self.merge(h1, h2)
-        h1.deep_merge h2
+        h1.extend DeepMergeWrapper
+        h1.deep_merge! h2
       end
 
       def self.__merge(h1, h2)
