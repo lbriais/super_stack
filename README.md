@@ -3,8 +3,7 @@
  [![Gem Version](https://badge.fury.io/rb/super_stack.svg)](http://badge.fury.io/rb/super_stack)
 
 The purpose of this gem is to provide a simple way to manage the merge of different
-hashes (layers).
-It offers different merge policies.
+hashes (layers) according to priority and different merge policies.
 
 ## Installation
 
