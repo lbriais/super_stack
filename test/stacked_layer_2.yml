@@ -1,0 +1,19 @@
+layer: two
+
+from_layer_2: ~
+  stupid-data: I'm stupid in two
+
+to-be-merged: ~
+  name: from layer 2
+  my-prop: property two
+  my-array:
+    - item 1 from array 2
+    - item 2 from array 2
+  my-hash: ~
+    common-property: from two
+    speficif1: Specific from two
+    a-sub-array:
+      -another item 1 from sub array 2
+      -another item 2 from sub array 2
+      -another item 3 from sub array 2
+

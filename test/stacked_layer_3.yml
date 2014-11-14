@@ -1,0 +1,19 @@
+layer: three
+
+from_layer_3: ~
+  stupid-data: I'm stupid in three
+
+to-be-merged: ~
+  name: from layer 3
+  my-prop: property three
+  my-array:
+    - item 1 from array 3
+    - item 3 from array 3
+  my-hash: ~
+    common-property: from three
+    speficif1: Specific from three
+    a-sub-array:
+      -another item 1 from sub array 3
+      -another item 3 from sub array 3
+      -another item 3 from sub array 3
+
