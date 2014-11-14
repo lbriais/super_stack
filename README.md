@@ -1,4 +1,6 @@
 # SuperStack
+ [![Build Status](https://travis-ci.org/lbriais/super_stack.svg)](https://travis-ci.org/lbriais/super_stack)
+ [![Gem Version](https://badge.fury.io/rb/super_stack.svg)](http://badge.fury.io/rb/super_stack)
 
 The purpose of this gem is to provide a simple way to manage the merge of different
 hashes (layers).
