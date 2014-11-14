@@ -52,7 +52,7 @@ describe SuperStack::MergePolicies do
 
     subject {SuperStack::MergePolicies::FullMergePolicy}
 
-    it 'should be merged at all levels level' do
+    it 'should be merged at all levels' do
       merged_hashs = subject.merge(layer1, layer2)
       expect( merged_hashs[:layer] == 'two').to be_truthy
       expect( merged_hashs[:from_layer_1]['stupid-data'] == 'stupid in one').to be_truthy
