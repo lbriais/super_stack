@@ -3,6 +3,7 @@ module SuperStack
     module FullMergePolicy
 
       def self.merge(h1, h2)
+        {}
       end
 
       def self.__merge(h1, h2)
