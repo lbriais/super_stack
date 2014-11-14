@@ -1,9 +1,11 @@
+require 'deep_merge/core'
+
 module SuperStack
   module MergePolicies
     module FullMergePolicy
 
       def self.merge(h1, h2)
-        {}
+        h1.deep_merge h2
       end
 
       def self.__merge(h1, h2)
