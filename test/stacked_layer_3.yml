@@ -8,10 +8,10 @@ to-be-merged:
   my-prop: property three
   my-array:
     - item 1 from array 3
-    - item 3 from array 3
+    - item 2 from array 3
   my-hash:
     common-property: from three
-    speficif1: Specific from three
+    speficif_3: Specific from three
     a-sub-array:
       - another item 1 from sub array 3
       - another item 3 from sub array 3

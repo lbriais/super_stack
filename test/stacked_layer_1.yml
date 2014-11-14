@@ -11,7 +11,7 @@ to-be-merged:
     - item 2 from array 1
   my-hash:
     common-property: from one
-    speficif1: Specific from one
+    speficif_1: Specific from one
     a-sub-array:
       - another item 1 from sub array 1
       - another item 2 from sub array 1
