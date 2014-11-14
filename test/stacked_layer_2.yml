@@ -1,7 +1,7 @@
 layer: two
 
 from_layer_2:
-  stupid-data: I'm stupid in two
+  stupid-data: stupid in two
 
 to-be-merged:
   name: from layer 2

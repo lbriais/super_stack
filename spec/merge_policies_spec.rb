@@ -26,8 +26,6 @@ describe SuperStack::MergePolicies do
 
     subject {SuperStack::MergePolicies::OverridePolicy}
 
-
-
     it 'should retain only the second hash' do
       merged_hashs = subject.merge(layer1, layer2)
       expect( merged_hashs == layer2).to be_truthy
@@ -36,5 +34,17 @@ describe SuperStack::MergePolicies do
 
   end
 
+  context 'when dealing with standard merge policy' do
 
+    subject {SuperStack::MergePolicies::StandardMergePolicy}
+
+    it 'should be merged at first level' do
+      merged_hashs = subject.merge(layer1, layer2)
+      expect( merged_hashs[:layer] == 'two').to be_truthy
+      expect( merged_hashs[:from_layer_1]['stupid-data'] == 'stupid in one').to be_truthy
+      expect( merged_hashs[:from_layer_2]['stupid-data'] == 'stupid in two').to be_truthy
+      expect( merged_hashs[:'to-be-merged'] == layer2[:'to-be-merged']).to be_truthy
+    end
+
+  end
 end
