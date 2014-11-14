@@ -30,6 +30,10 @@ describe SuperStack::Layer do
     expect( subject < other).to be_truthy
   end
 
+  it 'can be created from any Hash' do
+    expect {Hash.new.extend SuperStack::LayerWrapper }.not_to raise_error
+  end
+
   context 'when loaded from a YAML file' do
 
     def file_from_type(file_type)
