@@ -1,19 +1,19 @@
 layer: one
 
-from_layer_1: ~
+from_layer_1:
   stupid-data: I'm stupid in one
 
-to-be-merged: ~
+to-be-merged:
   name: from layer 1
   my-prop: property one
   my-array:
     - item 1 from array 1
     - item 2 from array 1
-  my-hash: ~
+  my-hash:
     common-property: from one
     speficif1: Specific from one
     a-sub-array:
-      -another item 1 from sub array 1
-      -another item 2 from sub array 1
-      -another item 3 from sub array 1
+      - another item 1 from sub array 1
+      - another item 2 from sub array 1
+      - another item 3 from sub array 1
 
