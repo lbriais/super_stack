@@ -58,6 +58,12 @@ describe SuperStack::MergePolicies do
       expect( merged_hashs[:from_layer_1]['stupid-data'] == 'stupid in one').to be_truthy
       expect( merged_hashs[:from_layer_2]['stupid-data'] == 'stupid in two').to be_truthy
       expect( merged_hashs[:'to-be-merged'] == layer2[:'to-be-merged']).to be_falsey
+
+      expect( merged_hashs[:'to-be-merged']['name'] == 'from layer 2').to be_truthy
+      expect( merged_hashs[:'to-be-merged']['my-array'].count == layer1[:'to-be-merged']['my-array'].count + layer2[:'to-be-merged']['my-array'].count).to be_truthy
+      # The hashes have 2 keys in common, and bring a new one each, leading to 4.
+      expect( merged_hashs[:'to-be-merged']['my-hash'].keys.count == 4).to be_truthy
+
     end
 
   end
