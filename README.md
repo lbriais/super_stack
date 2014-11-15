@@ -112,6 +112,8 @@ process will use the `default_merge_policy` except if a layer specifies its own.
 
 In most cases you will just have to set the merge policy at the manager level using `default_merge_policy=`.
 
+The alternative is to set the policy at the layer level using `merge_policy=`
+
 ## Contributing
 
 1. Fork it ( http://github.com/lbriais/super_stack/fork )
