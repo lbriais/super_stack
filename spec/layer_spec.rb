@@ -50,6 +50,23 @@ describe SuperStack::Layer do
       end
     end
 
+    it 'should remain unchanged when trying to load an invalid file' do
+      subject[:foo] = :bar
+      expect {
+        subject.load file_from_type 'invalid'
+      }.not_to raise_error
+
+      expect(subject[:foo] == :bar).to be_truthy
+    end
+
+    it 'should override current values when loaded from a valid file' do
+      subject[:foo] = :bar
+      expect {
+        subject.load file_from_type 'well_formatted'
+      }.not_to raise_error
+
+      expect(subject[:foo] == :bar).to be_falsey
+    end
 
   end
 
