@@ -30,6 +30,8 @@ describe SuperStack::Manager do
     subject.add_layer l2
     subject.add_layer l1
 
+    expect(subject.layers.count == 2).to be_truthy
+
     expect(subject.to_a[0] == l1).to be_truthy
     expect(subject.to_a[1] == l2).to be_truthy
   end
@@ -51,6 +53,20 @@ describe SuperStack::Manager do
 
   it 'should support pure hashes as layers' do
     expect {subject.add_layer({}) }.not_to raise_error
+    expect {subject.add_layer({}) }.not_to raise_error
+    expect(subject.layers.keys.count == 2).to be_truthy
+    expect(subject.layers.keys[0] == SuperStack::Layer::DEFAULT_LAYER_NAME).to be_truthy
+    expect(subject.layers.keys[1] == "#{SuperStack::Layer::DEFAULT_LAYER_NAME} #2").to be_truthy
+  end
+
+  it 'should allow the same layer to be added multiple times, automatically changing names' do
+    expect {subject.add_layer(layer1) }.not_to raise_error
+    expect {subject.add_layer(layer1) }.not_to raise_error
+    expect {subject.add_layer(layer1) }.not_to raise_error
+    expect(subject.layers.keys.count == 3).to be_truthy
+    expect(subject.layers.keys[0] == 'layer1').to be_truthy
+    expect(subject.layers.keys[1] == 'layer1 #2').to be_truthy
+    expect(subject.layers.keys[2] == 'layer1 #3').to be_truthy
   end
 
   context 'when ready' do

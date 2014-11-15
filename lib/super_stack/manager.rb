@@ -38,8 +38,7 @@ module SuperStack
       if layer.is_a? Hash and not layer.class.included_modules.include? SuperStack::LayerWrapper
         layer.extend SuperStack::LayerWrapper
       end
-      raise 'Layer should have a name' unless layer.respond_to? :name
-      raise 'Layer already existing' if layers.keys.include? layer.name
+      set_valid_name_for layer if layers.keys.include? layer.name
       layer.priority = get_unused_priority if layer.priority.nil?
       layers[layer.name] = layer
     end
@@ -54,6 +53,18 @@ module SuperStack
       ordered = self.to_a
       return DEFAULT_INTERVAL if ordered.empty?
       ordered.last.priority + DEFAULT_INTERVAL
+    end
+
+    def set_valid_name_for(layer)
+      name_pattern = /^(?<layer_name>.+) #(?<number>\d+)\s*$/
+      while layers.keys.include? layer.name
+        layer.name = "#{layer.name} #1" unless layer.name =~ name_pattern
+        layer.name.match(name_pattern) do |md|
+          layer.name = "#{md[:layer_name]} ##{md[:number].to_i + 1}"
+          next
+        end
+      end
+      layer.name
     end
 
   end
