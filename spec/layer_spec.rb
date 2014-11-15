@@ -54,7 +54,7 @@ describe SuperStack::Layer do
       subject[:foo] = :bar
       expect {
         subject.load file_from_type 'invalid'
-      }.not_to raise_error
+      }.to raise_error
 
       expect(subject[:foo] == :bar).to be_truthy
     end

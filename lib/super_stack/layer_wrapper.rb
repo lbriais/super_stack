@@ -24,7 +24,7 @@ module SuperStack
     end
 
     def load(file_name, type = :yaml)
-      raise 'Invalid file' unless File.readable? file_name
+      raise "Cannot read file '#{file_name}'" unless File.readable? file_name
       load_from_yaml file_name if type == :yaml
     end
 
@@ -47,8 +47,9 @@ module SuperStack
       begin
         self.replace Hash[YAML::load(File.open(file_name)).map { |k, v| [k.to_sym, v] }]
 
-      rescue  NoMethodError
+      rescue  NoMethodError => e
         # Empty file...
+        raise "Invalid file '#{file_name}'" unless e.message =~ /false:FalseClass/
       end
       @file_name = file_name
     end
