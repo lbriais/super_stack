@@ -48,6 +48,10 @@ module SuperStack
       inspect
     end
 
+    def self.from_hash(hash)
+      hash.extend self
+    end
+
     private
 
     def load_from_yaml(file_name)

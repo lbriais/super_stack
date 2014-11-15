@@ -36,7 +36,7 @@ describe SuperStack::Layer do
   end
 
   it 'can be created from any Hash' do
-    expect {Hash.new.extend SuperStack::LayerWrapper }.not_to raise_error
+    expect {SuperStack::LayerWrapper.from_hash Hash.new}.not_to raise_error
   end
 
   context 'when loaded from a YAML file' do
