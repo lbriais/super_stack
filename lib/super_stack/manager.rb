@@ -5,12 +5,17 @@ module SuperStack
     alias_method :default_merge_policy, :merge_policy
     alias_method :'default_merge_policy=', :'merge_policy='
 
-    DEFAULT_INTERVAL = 10
+    DEFAULT_PRIORITY_INTERVAL = 10
+    DEFAULT_MERGE_POLICY = SuperStack::MergePolicies::StandardMergePolicy
 
     attr_reader :layers
 
+    def initialize
+      @layers = {}
+      self.default_merge_policy = DEFAULT_MERGE_POLICY
+    end
+
     def [](filter=nil)
-      raise 'Manager not ready (no merge policy specified)' unless ready?
       layers = to_a
       return [] if layers.empty?
       return layers[0] if layers.count == 1
@@ -26,10 +31,6 @@ module SuperStack
       end
     end
 
-    def initialize
-      @layers = {}
-    end
-
     def to_a
       layers.values.sort
     end
@@ -43,16 +44,12 @@ module SuperStack
       layers[layer.name] = layer
     end
 
-    def ready?
-      !default_merge_policy.nil?
-    end
-
     private
 
     def get_unused_priority
       ordered = self.to_a
-      return DEFAULT_INTERVAL if ordered.empty?
-      ordered.last.priority + DEFAULT_INTERVAL
+      return DEFAULT_PRIORITY_INTERVAL if ordered.empty?
+      ordered.last.priority + DEFAULT_PRIORITY_INTERVAL
     end
 
     def set_valid_name_for(layer)
