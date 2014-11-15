@@ -23,18 +23,18 @@ describe SuperStack::Manager do
     expect(subject.to_a[1] == l2).to be_truthy
   end
 
-  it 'should have a policy' do
-    expect( subject.respond_to? :merge_policy).to be_truthy
+  it 'should have a default policy' do
+    expect( subject.respond_to? :default_merge_policy).to be_truthy
   end
 
   it 'should not be ready unless a merge policy is set' do
     expect( subject.ready?).to be_falsey
-    subject.merge_policy = SuperStack::MergePolicies.list[0]
+    subject.default_merge_policy = SuperStack::MergePolicies.list[0]
     expect( subject.ready?).to be_truthy
   end
 
   it 'should not accept stupid policies' do
-    expect {subject.merge_policy = :foo}.to raise_error
+    expect {subject.default_merge_policy = :foo}.to raise_error
   end
 
   context 'when ready' do
@@ -59,14 +59,11 @@ describe SuperStack::Manager do
         subject.add_layer layer2
         subject.add_layer layer3
         subject.add_layer layer4
-        subject.merge_policy = policy
+        subject.default_merge_policy = policy
         expect(subject[].is_a? Hash).to be_truthy
         expect(subject[:layer] == 'four').to be_truthy
       end
     end
-
-
-
 
   end
 

@@ -1,9 +1,13 @@
 module SuperStack
   class Manager
 
+    include SuperStack::MergePolicies::PolicyHandler
+    alias_method :default_merge_policy, :merge_policy
+    alias_method :'default_merge_policy=', :'merge_policy='
+
     DEFAULT_INTERVAL = 10
 
-    attr_reader :layers, :merge_policy
+    attr_reader :layers
 
     def [](filter=nil)
       raise 'Manager not ready (no merge policy specified)' unless ready?
@@ -12,7 +16,7 @@ module SuperStack
       return layers[0] if layers.count == 1
       first_layer = layers.shift
       res = layers.inject(first_layer) do |stack, layer|
-        merge_policy.merge stack, layer
+        default_merge_policy.merge stack, layer
       end
       if filter.nil?
         res
@@ -36,13 +40,8 @@ module SuperStack
       layers[layer.name] = layer
     end
 
-    def merge_policy=(policy)
-      raise "Invalid merge policy #{policy}" unless SuperStack::MergePolicies.list.include? policy
-      @merge_policy = policy
-    end
-
     def ready?
-      !@merge_policy.nil?
+      !default_merge_policy.nil?
     end
 
     private
