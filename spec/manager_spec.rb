@@ -41,10 +41,8 @@ describe SuperStack::Manager do
     expect( subject.respond_to? :'default_merge_policy=').to be_truthy
   end
 
-  it 'should not be ready unless a merge policy is set' do
-    expect( subject.ready?).to be_falsey
-    subject.default_merge_policy = SuperStack::MergePolicies.list[0]
-    expect( subject.ready?).to be_truthy
+  it 'should have a default merge policy' do
+    expect( subject.default_merge_policy == SuperStack::Manager::DEFAULT_MERGE_POLICY).to be_truthy
   end
 
   it 'should not accept stupid policies' do
