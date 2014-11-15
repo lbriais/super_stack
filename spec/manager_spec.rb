@@ -4,6 +4,16 @@ require 'spec_helper'
 describe SuperStack::Manager do
   subject {SuperStack::Manager.new}
 
+  (1..4).each do |layer_number|
+    let("layer#{layer_number}".to_sym) {
+      file_name = file_from_layer layer_number
+      layer = SuperStack::Layer.new
+      layer.load file_name
+      layer.name = "layer#{layer_number}"
+      layer
+    }
+  end
+
 
   it 'should contain layers' do
     expect( subject.respond_to? :layers).to be_truthy
@@ -41,16 +51,6 @@ describe SuperStack::Manager do
 
   context 'when ready' do
 
-    (1..4).each do |layer_number|
-      let("layer#{layer_number}".to_sym) {
-        file_name = file_from_layer layer_number
-        layer = SuperStack::Layer.new
-        layer.load file_name
-        layer.name = "layer#{layer_number}"
-        layer
-      }
-    end
-
     SuperStack::MergePolicies.list.each do |policy|
       it "should provide a merged view of the layers according to the merge policy: #{policy}" do
         subject.add_layer layer1
@@ -61,6 +61,21 @@ describe SuperStack::Manager do
         expect(subject[].is_a? Hash).to be_truthy
         expect(subject[:layer] == 'four').to be_truthy
       end
+    end
+
+  end
+
+  context 'when using policies at layer level' do
+
+    it 'should override the manager policy' do
+      subject.add_layer layer1
+      subject.add_layer layer2
+      subject.default_merge_policy = SuperStack::MergePolicies::FullMergePolicy
+      layer2.merge_policy = SuperStack::MergePolicies::OverridePolicy
+
+      expect(subject[:from_layer_1]).to be_nil
+      expect(subject[:from_layer_2]).not_to be_nil
+
     end
 
   end
