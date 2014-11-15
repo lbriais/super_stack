@@ -21,7 +21,16 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'super_stack'
+
+manager = SuperStack::Manager.new
+
+
+
+```
+
+
 
 ## Contributing
 

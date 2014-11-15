@@ -35,6 +35,9 @@ module SuperStack
     end
 
     def add_layer(layer)
+      if layer.is_a? Hash and not layer.class.included_modules.include? SuperStack::LayerWrapper
+        layer.extend SuperStack::LayerWrapper
+      end
       raise 'Layer should have a name' unless layer.respond_to? :name
       raise 'Layer already existing' if layers.keys.include? layer.name
       layer.priority = get_unused_priority if layer.priority.nil?

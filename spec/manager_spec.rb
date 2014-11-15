@@ -49,6 +49,10 @@ describe SuperStack::Manager do
     expect {subject.default_merge_policy = :foo}.to raise_error
   end
 
+  it 'should support pure hashes as layers' do
+    expect {subject.add_layer({}) }.not_to raise_error
+  end
+
   context 'when ready' do
 
     SuperStack::MergePolicies.list.each do |policy|
