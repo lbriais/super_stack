@@ -44,6 +44,10 @@ module SuperStack
       layers[layer.name] = layer
     end
 
+    def <<(layer)
+      add_layer layer
+    end
+
     private
 
     def get_unused_priority

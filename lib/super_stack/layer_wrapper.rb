@@ -26,6 +26,7 @@ module SuperStack
     def load(file_name, type = :yaml)
       raise "Cannot read file '#{file_name}'" unless File.readable? file_name
       load_from_yaml file_name if type == :yaml
+      self
     end
 
     def has_file?
@@ -38,7 +39,13 @@ module SuperStack
     end
 
     def inspect
-      "name: #{name}, priority: #{priority}, #{super}"
+      file_add_on = has_file? ? "file: '#{file_name}', " : ''
+      priority_add_on = priority.nil? ? '' : "priority: #{priority}, "
+      "{name: '#{name}', #{priority_add_on}#{file_add_on}#{super}}"
+    end
+
+    def to_s
+      inspect
     end
 
     private
