@@ -8,11 +8,22 @@ module SuperStack
     DEFAULT_PRIORITY_INTERVAL = 10
     DEFAULT_MERGE_POLICY = SuperStack::MergePolicies::StandardMergePolicy
 
-    attr_reader :layers
+    attr_reader :layers, :write_layer
 
     def initialize
       @layers = {}
       self.default_merge_policy = DEFAULT_MERGE_POLICY
+    end
+
+    def write_layer=(layer_or_layer_name)
+      if layer_or_layer_name.is_a?(String) || layer_or_layer_name.is_a?(Symbol)
+        layer_name = layer_or_layer_name.to_s
+        raise 'Invalid write layer' unless layers.keys.include? layer_name
+        layer_or_layer_name = layers[layer_name]
+      end
+      # At that point layer_or_layer_name can only contain a layer object
+      raise 'Invalid write layer' unless layers.values.include? layer_or_layer_name
+      @write_layer = layer_or_layer_name
     end
 
     def [](filter=nil)

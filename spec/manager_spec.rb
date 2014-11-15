@@ -68,18 +68,29 @@ describe SuperStack::Manager do
   end
 
   it 'should allow to reload all layers at once' do
-      subject.add_layer layer1
-      subject << {bar: :foo}
-      subject.add_layer layer3
-      subject.add_layer layer4
-      expect(subject[:foo] == :bar).to be_falsey
-      subject.layers['layer3'][:foo] = :bar
-      expect(subject[:foo] == :bar).to be_truthy
-      expect(subject[:bar] == :foo).to be_truthy
-      expect {subject.reload_layers}.not_to raise_error
-      expect(subject[:foo] == :bar).to be_falsey
-      expect(subject[:bar] == :foo).to be_truthy
+    subject.add_layer layer1
+    subject << {bar: :foo}
+    subject.add_layer layer3
+    subject.add_layer layer4
+    expect(subject[:foo] == :bar).to be_falsey
+    subject.layers['layer3'][:foo] = :bar
+    expect(subject[:foo] == :bar).to be_truthy
+    expect(subject[:bar] == :foo).to be_truthy
+    expect {subject.reload_layers}.not_to raise_error
+    expect(subject[:foo] == :bar).to be_falsey
+    expect(subject[:bar] == :foo).to be_truthy
   end
+
+  it 'should be possible to specify a write layer using its name or itself' do
+    override = SuperStack::Layer.new
+    override.name = :override
+    subject << override
+    subject << layer1
+    expect {subject.write_layer = :override}.not_to raise_error
+    expect {subject.write_layer = 'override'}.not_to raise_error
+    expect {subject.write_layer = override}.not_to raise_error
+  end
+
 
 
   SuperStack::MergePolicies.list.each do |policy|
