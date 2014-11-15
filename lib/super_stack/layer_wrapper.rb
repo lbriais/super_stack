@@ -30,7 +30,7 @@ module SuperStack
     end
 
     def reload
-      self.load
+      self.load if has_file?
     end
 
     def has_file?
