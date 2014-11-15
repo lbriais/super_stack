@@ -26,6 +26,11 @@ module SuperStack
       @write_layer = layer_or_layer_name
     end
 
+    def []=(key,value)
+      raise 'No write layer specified' if write_layer.nil?
+      write_layer[key] = value
+    end
+
     def [](filter=nil)
       layers = to_a
       return [] if layers.empty?

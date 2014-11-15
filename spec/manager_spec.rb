@@ -91,6 +91,23 @@ describe SuperStack::Manager do
     expect {subject.write_layer = override}.not_to raise_error
   end
 
+  it 'should not be possible to modify if no write layer has been specified' do
+    subject << layer1
+    subject << layer2
+    expect {subject[:foo] = :bar}.to raise_error
+  end
+
+  it 'should push all modifications to the write layer' do
+    override = SuperStack::Layer.new
+    override.name = :override
+    subject << override
+    subject << layer1
+    subject.write_layer = override
+    expect {subject[:foo] = :bar}.not_to raise_error
+    expect(subject.layers['override'][:foo] == :bar).to be_truthy
+    expect(subject[:foo] == :bar).to be_truthy
+  end
+
 
 
   SuperStack::MergePolicies.list.each do |policy|
