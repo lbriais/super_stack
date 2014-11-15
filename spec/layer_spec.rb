@@ -41,10 +41,6 @@ describe SuperStack::Layer do
 
   context 'when loaded from a YAML file' do
 
-    def file_from_type(file_type)
-      File.expand_path("../../test/layer_content_type_#{file_type}.yml", __FILE__)
-    end
-
     %w(empty standard containing_an_array well_formatted).each do |file_type|
       it "should allow #{file_type} content type" do
         expect {

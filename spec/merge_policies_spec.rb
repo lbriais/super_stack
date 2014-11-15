@@ -4,10 +4,6 @@ describe SuperStack::MergePolicies do
 
   subject {SuperStack::MergePolicies}
 
-  def file_from_layer(layer_number)
-    File.expand_path("../../test/stacked_layer_#{layer_number}.yml", __FILE__)
-  end
-
   (1..4).each do |layer_number|
     let("layer#{layer_number}".to_sym) {
       file_name = file_from_layer layer_number

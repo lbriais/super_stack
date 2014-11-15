@@ -17,6 +17,15 @@
 
 require 'super_stack'
 
+
+def file_from_layer(layer_number)
+  File.expand_path("../../test/stacked_layer_#{layer_number}.yml", __FILE__)
+end
+
+def file_from_type(file_type)
+  File.expand_path("../../test/layer_content_type_#{file_type}.yml", __FILE__)
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
