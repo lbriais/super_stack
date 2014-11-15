@@ -25,6 +25,7 @@ describe SuperStack::Manager do
 
   it 'should have a default policy' do
     expect( subject.respond_to? :default_merge_policy).to be_truthy
+    expect( subject.respond_to? :'default_merge_policy=').to be_truthy
   end
 
   it 'should not be ready unless a merge policy is set' do

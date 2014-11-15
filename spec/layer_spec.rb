@@ -13,6 +13,11 @@ describe SuperStack::Layer do
     expect(subject.name == subject.class.const_get('DEFAULT_LAYER_NAME')).to be_truthy
   end
 
+  it 'could have its own merge policy' do
+    expect( subject.respond_to? :merge_policy).to be_truthy
+    expect( subject.respond_to? :'merge_policy=').to be_truthy
+  end
+
   it 'should allow to change the name' do
     subject.name = 'foo'
     expect(subject.name == 'foo').to be_truthy

@@ -4,6 +4,7 @@ module SuperStack
   module LayerWrapper
 
     include Comparable
+    include SuperStack::MergePolicies::PolicyHandler
 
     DEFAULT_LAYER_NAME = 'Unknown layer'
 

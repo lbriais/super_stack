@@ -16,7 +16,8 @@ module SuperStack
       return layers[0] if layers.count == 1
       first_layer = layers.shift
       res = layers.inject(first_layer) do |stack, layer|
-        default_merge_policy.merge stack, layer
+        policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
+        policy_to_apply.merge stack, layer
       end
       if filter.nil?
         res
