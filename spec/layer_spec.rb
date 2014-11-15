@@ -68,6 +68,16 @@ describe SuperStack::Layer do
       expect(subject[:foo] == :bar).to be_falsey
     end
 
+    it 'should not allow to reload when no load has already been done' do
+      expect {subject.reload}.to raise_error
+    end
+
+    it 'should allow to reload when a load has already been done' do
+      expect {subject.load file_from_type 'well_formatted'}.not_to raise_error
+      expect {subject.reload}.not_to raise_error
+    end
+
+
   end
 
 

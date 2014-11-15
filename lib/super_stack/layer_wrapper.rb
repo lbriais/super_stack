@@ -23,10 +23,14 @@ module SuperStack
       @name || DEFAULT_LAYER_NAME
     end
 
-    def load(file_name, type = :yaml)
+    def load(file_name=self.file_name, type = :yaml)
       raise "Cannot read file '#{file_name}'" unless File.readable? file_name
       load_from_yaml file_name if type == :yaml
       self
+    end
+
+    def reload
+      self.load
     end
 
     def has_file?
