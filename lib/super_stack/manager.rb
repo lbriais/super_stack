@@ -48,6 +48,10 @@ module SuperStack
       add_layer layer
     end
 
+    def reload_layers
+      layers.values.each &:reload
+    end
+
     private
 
     def get_unused_priority

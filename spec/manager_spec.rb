@@ -67,26 +67,37 @@ describe SuperStack::Manager do
     expect(subject.layers.keys[2] == 'layer1 #3').to be_truthy
   end
 
-  context 'when ready' do
+  it 'should allow to reload all layers at once' do
+      subject.add_layer layer1
+      subject << {bar: :foo}
+      subject.add_layer layer3
+      subject.add_layer layer4
+      expect(subject[:foo] == :bar).to be_falsey
+      subject.layers['layer3'][:foo] = :bar
+      expect(subject[:foo] == :bar).to be_truthy
+      expect(subject[:bar] == :foo).to be_truthy
+      expect {subject.reload_layers}.not_to raise_error
+      expect(subject[:foo] == :bar).to be_falsey
+      expect(subject[:bar] == :foo).to be_truthy
+  end
 
-    SuperStack::MergePolicies.list.each do |policy|
-      it "should provide a merged view of the layers according to the merge policy: #{policy}" do
-        subject.add_layer layer1
-        subject.add_layer layer2
-        subject.add_layer layer3
-        subject.add_layer layer4
-        subject.default_merge_policy = policy
-        expect(subject[].is_a? Hash).to be_truthy
-        policy == SuperStack::MergePolicies::KeepPolicy ?
-            expect(subject[:layer] == 'one').to(be_truthy) : expect(subject[:layer] == 'four').to(be_truthy)
-      end
+
+  SuperStack::MergePolicies.list.each do |policy|
+    it "should provide a merged view of the layers according to the merge policy: #{policy}" do
+      subject.add_layer layer1
+      subject.add_layer layer2
+      subject.add_layer layer3
+      subject.add_layer layer4
+      subject.default_merge_policy = policy
+      expect(subject[].is_a? Hash).to be_truthy
+      policy == SuperStack::MergePolicies::KeepPolicy ?
+          expect(subject[:layer] == 'one').to(be_truthy) : expect(subject[:layer] == 'four').to(be_truthy)
     end
-
   end
 
   context 'when using policies at layer level' do
 
-    it 'should override the manager policy' do
+    it 'should override the default manager policy' do
       subject.add_layer layer1
       subject.add_layer layer2
       subject.default_merge_policy = SuperStack::MergePolicies::FullMergePolicy
