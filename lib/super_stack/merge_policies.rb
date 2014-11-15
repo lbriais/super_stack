@@ -1,3 +1,4 @@
+require 'super_stack/merge_policies/keep_policy'
 require 'super_stack/merge_policies/override_policy'
 require 'super_stack/merge_policies/standard_merge_policy'
 require 'super_stack/merge_policies/full_merge_policy'

@@ -15,7 +15,19 @@ describe SuperStack::MergePolicies do
   it 'should have merge policies' do
     policies = subject.list
     expect( policies.is_a? Array).to be_truthy
-    expect( policies.count == 3).to be_truthy
+    expect( policies.count == 4).to be_truthy
+  end
+
+  context 'when dealing with keep policy' do
+
+    subject {SuperStack::MergePolicies::KeepPolicy}
+
+    it 'should retain only the first hash' do
+      merged_hashs = subject.merge(layer1, layer2)
+      expect( merged_hashs == layer1).to be_truthy
+      expect( merged_hashs[:layer] == 'one').to be_truthy
+    end
+
   end
 
   context 'when dealing with override policy' do

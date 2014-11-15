@@ -77,7 +77,8 @@ describe SuperStack::Manager do
         subject.add_layer layer4
         subject.default_merge_policy = policy
         expect(subject[].is_a? Hash).to be_truthy
-        expect(subject[:layer] == 'four').to be_truthy
+        policy == SuperStack::MergePolicies::KeepPolicy ?
+            expect(subject[:layer] == 'one').to(be_truthy) : expect(subject[:layer] == 'four').to(be_truthy)
       end
     end
 
