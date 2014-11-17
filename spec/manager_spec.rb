@@ -36,12 +36,9 @@ describe SuperStack::Manager do
     expect(subject.to_a[1] == l2).to be_truthy
   end
 
-  it 'should have a default policy' do
+  it 'should have a default merge policy' do
     expect( subject.respond_to? :default_merge_policy).to be_truthy
     expect( subject.respond_to? :'default_merge_policy=').to be_truthy
-  end
-
-  it 'should have a default merge policy' do
     expect( subject.default_merge_policy == SuperStack::Manager::DEFAULT_MERGE_POLICY).to be_truthy
   end
 
