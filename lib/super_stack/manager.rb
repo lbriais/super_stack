@@ -58,6 +58,7 @@ module SuperStack
       set_valid_name_for layer if layers.keys.include? layer.name
       layer.priority = get_unused_priority if layer.priority.nil?
       layers[layer.name] = layer
+      layer.instance_variable_set :@manager, self
     end
 
     def <<(layer)

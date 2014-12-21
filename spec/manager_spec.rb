@@ -19,6 +19,11 @@ describe SuperStack::Manager do
     expect( subject.respond_to? :layers).to be_truthy
   end
 
+  it 'should be added as manager to added layers' do
+    subject.add_layer({})
+    expect(subject.layers.values.first.manager == subject).to be_truthy
+  end
+
   it 'should present layers ordered by priority' do
     l1 = SuperStack::Layer.new
     l1.priority = 1
