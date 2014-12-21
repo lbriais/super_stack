@@ -51,6 +51,10 @@ module SuperStack
       layers.values.sort
     end
 
+    def reset
+      write_layer.clear unless write_layer.nil?
+    end
+
     def add_layer(layer)
       if layer.is_a? Hash and not layer.class.included_modules.include? SuperStack::LayerWrapper
         SuperStack::LayerWrapper.from_hash layer

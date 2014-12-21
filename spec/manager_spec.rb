@@ -111,6 +111,18 @@ describe SuperStack::Manager do
   end
 
 
+  it 'should be possible to clear modifications' do
+    subject << layer1
+    override = SuperStack::Layer.new
+    override.name = :override
+    subject << override
+    subject.write_layer = override
+    subject[:something_modified] = :modified
+    expect(subject[:something_modified]).not_to be_nil
+    subject.reset
+    expect(subject[:something_modified]).to be_nil
+  end
+
 
   SuperStack::MergePolicies.list.each do |policy|
     it "should provide a merged view of the layers according to the merge policy: #{policy}" do
