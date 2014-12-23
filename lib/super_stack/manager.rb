@@ -63,6 +63,7 @@ module SuperStack
       layer.priority = get_unused_priority if layer.priority.nil?
       layers[layer.name] = layer
       layer.instance_variable_set :@manager, self
+      layer.managed if layer.respond_to? :managed
     end
 
     def <<(layer)

@@ -24,6 +24,18 @@ describe SuperStack::Manager do
     expect(subject.layers.values.first.manager == subject).to be_truthy
   end
 
+
+  it 'should call managed on layer when adding it' do
+    layer = {}
+    class << layer
+      def managed
+        return :yo
+      end
+    end
+    expect(layer).to receive(:managed)
+    subject << layer
+  end
+
   it 'should present layers ordered by priority' do
     l1 = SuperStack::Layer.new
     l1.priority = 1
