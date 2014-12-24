@@ -41,7 +41,8 @@ module SuperStack
         policy_to_apply.merge stack, layer
       end
       if filter.nil?
-        res
+        # Trick to return a bare hash
+        {}.merge res
       else
         res[filter]
       end
