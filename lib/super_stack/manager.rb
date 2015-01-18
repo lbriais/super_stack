@@ -16,7 +16,7 @@ module SuperStack
     end
 
     def write_layer=(layer_or_layer_name)
-      layer = get_existing_layer layer_or_layer_name, 'Invalid write layer'
+      layer = get_existing_layer layer_or_layer_name, 'Invalid write layer specified'
       raise 'Cannot use a disabled layer as write layer' if layer.disabled?
       @previous_write_layer = nil
       @write_layer = layer
@@ -72,6 +72,7 @@ module SuperStack
       layer = get_existing_layer layer_or_layer_name, 'Cannot remove unmanaged layer'
       layer_name = layer.name
       @write_layer = nil if layer == write_layer
+      layer.instance_variable_set :@manager, nil
       layers.delete layer_name
     end
 

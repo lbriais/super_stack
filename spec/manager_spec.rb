@@ -191,6 +191,10 @@ describe SuperStack::Manager do
     it 'should accept a layer itself' do
       expect {subject.remove_layer layer3}.not_to raise_error
     end
+    it 'should not manage the layer anymore' do
+      subject.remove_layer :layer3
+      expect(layer3.manager).to be_nil
+    end
 
     it 'should remain consistent in terms of merged view' do
       subject.remove_layer :layer3

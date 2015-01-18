@@ -63,7 +63,7 @@ the name conflicts with another layer already handled by the manager**.
 You can notice by the way that it gives a third way to create a layer from a hash, as when adding a hash to a manager,
 it automatically adds the `SuperStack::LayerWrapper` module to the hash.
 
-Layers can be populated from a file anytime using the `load` method:
+Layers can be populated from a yaml file anytime using the `load` method:
 
 ```ruby
 layer = SuperStack::Layer.new.load 'a_file_somewhere'
@@ -89,6 +89,13 @@ manager << layer2
 manager.reload_layers
 ```
 
+Layers can of course be:
+* removed (using the manager's `remove_layer(layer_or_layer_name)` method).
+* Enabled or disabled (using the manager's `disable_layer(layer_or_layer_name)` and `enable_layer(layer_or_layer_name)`
+  methods).
+
+Of course these methods have an impact on the `write_layer` if applied to it. Check tests (run `rspec -f d`) for
+more info.
 
 ### Merge policies
 
