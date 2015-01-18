@@ -164,4 +164,53 @@ describe SuperStack::Manager do
 
   end
 
+  context 'when removing a layer' do
+
+    subject {
+      s = SuperStack::Manager.new
+      s.add_layer layer1
+      s.add_layer layer2
+      s.add_layer layer3
+      s.add_layer layer4
+      s
+    }
+
+
+    it 'should not accept an incorrect layer' do
+      expect {subject.remove_layer :layer12}.to raise_error
+      expect {subject.remove_layer nil}.to raise_error
+    end
+
+    it 'should accept a symbol' do
+      expect {subject.remove_layer :layer3}.not_to raise_error
+    end
+    it 'should accept a string' do
+      expect {subject.remove_layer 'layer3'}.not_to raise_error
+    end
+    it 'should accept a layer itself' do
+      expect {subject.remove_layer layer3}.not_to raise_error
+    end
+
+    it 'should remain consistent in terms of merged view' do
+      subject.remove_layer :layer3
+      expect(subject[:from_layer_3]).to be_nil
+      expect(subject[:from_layer_1]).not_to be_nil
+      expect(subject[:from_layer_2]).not_to be_nil
+      expect(subject[:from_layer_4]).not_to be_nil
+    end
+
+    it 'should remain consistent regarding the write level' do
+      subject.write_layer = :layer3
+      expect(subject.write_layer == layer3).to be_truthy
+      subject[:pipo] = :bimbo
+      expect(layer3[:pipo] == :bimbo).to be_truthy
+      subject.remove_layer :layer3
+      expect(subject[:pipo] == :bimbo).to be_falsey
+      expect(subject.write_layer).to be_nil
+    end
+
+  end
+
+
+
 end

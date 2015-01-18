@@ -16,14 +16,8 @@ module SuperStack
     end
 
     def write_layer=(layer_or_layer_name)
-      if layer_or_layer_name.is_a?(String) || layer_or_layer_name.is_a?(Symbol)
-        layer_name = layer_or_layer_name.to_s
-        raise 'Invalid write layer' unless layers.keys.include? layer_name
-        layer_or_layer_name = layers[layer_name]
-      end
-      # At that point layer_or_layer_name can only contain a layer object
-      raise 'Invalid write layer' unless layers.values.include? layer_or_layer_name
-      @write_layer = layer_or_layer_name
+      layer = get_existing_layer layer_or_layer_name, 'Invalid write layer'
+      @write_layer = layer
     end
 
     def []=(key,value)
@@ -67,6 +61,13 @@ module SuperStack
       layer.managed if layer.respond_to? :managed
     end
 
+    def remove_layer(layer_or_layer_name)
+      layer = get_existing_layer layer_or_layer_name, 'Cannot remove unmanaged layer'
+      layer_name = layer.name
+      @write_layer = nil if layer == write_layer
+      layers.delete layer_name
+    end
+
     def <<(layer)
       add_layer layer
     end
@@ -76,6 +77,16 @@ module SuperStack
     end
 
     private
+
+    def get_existing_layer(layer_or_layer_name, error_message)
+      layer_name = layer_or_layer_name.to_s if layer_or_layer_name.is_a? Symbol
+      layer_name = layer_or_layer_name if layer_or_layer_name.is_a? String
+      layer = layers[layer_name] unless layer_name.nil?
+      layer = layer_or_layer_name if layer_or_layer_name.class.included_modules.include? SuperStack::LayerWrapper
+      raise error_message if layer.nil?
+      layer
+    end
+
 
     def get_unused_priority
       ordered = self.to_a
