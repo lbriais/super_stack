@@ -8,7 +8,8 @@ module SuperStack
 
     DEFAULT_LAYER_NAME = 'Unknown layer'
 
-    attr_reader :file_name, :priority, :manager
+    attr_reader :file_name, :priority, :manager, :disabled
+    alias_method :disabled?, :disabled
 
     def priority=(priority)
       raise 'invalid priority' unless priority.is_a? Numeric

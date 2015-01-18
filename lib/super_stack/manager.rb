@@ -17,6 +17,7 @@ module SuperStack
 
     def write_layer=(layer_or_layer_name)
       layer = get_existing_layer layer_or_layer_name, 'Invalid write layer'
+      @previous_write_layer = nil
       @write_layer = layer
     end
 
@@ -31,8 +32,12 @@ module SuperStack
       return layers[0] if layers.count == 1
       first_layer = layers.shift
       res = layers.inject(first_layer) do |stack, layer|
-        policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
-        policy_to_apply.merge stack, layer
+        if layer.disabled?
+          stack
+        else
+          policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
+          policy_to_apply.merge stack, layer
+        end
       end
       if filter.nil?
         # Trick to return a bare hash
@@ -56,6 +61,7 @@ module SuperStack
       end
       set_valid_name_for layer if layers.keys.include? layer.name
       layer.priority = get_unused_priority if layer.priority.nil?
+      raise 'This layer already belongs to a manager' unless layer.manager.nil?
       layers[layer.name] = layer
       layer.instance_variable_set :@manager, self
       layer.managed if layer.respond_to? :managed
@@ -66,6 +72,21 @@ module SuperStack
       layer_name = layer.name
       @write_layer = nil if layer == write_layer
       layers.delete layer_name
+    end
+
+    def disable_layer(layer_or_layer_name)
+      layer = get_existing_layer layer_or_layer_name, 'Cannot disable unmanaged layer'
+      if layer == write_layer
+        @previous_write_layer = write_layer
+        @write_layer = nil
+      end
+      layer.instance_variable_set :@disabled, true
+    end
+
+    def enable_layer(layer_or_layer_name)
+      layer = get_existing_layer layer_or_layer_name, 'Cannot enable unmanaged layer'
+      layer.instance_variable_set :@disabled, false
+      @write_layer = @previous_write_layer if layer == @previous_write_layer
     end
 
     def <<(layer)
@@ -87,7 +108,6 @@ module SuperStack
       layer
     end
 
-
     def get_unused_priority
       ordered = self.to_a
       return DEFAULT_PRIORITY_INTERVAL if ordered.empty?
@@ -96,6 +116,7 @@ module SuperStack
 
     def set_valid_name_for(layer)
       name_pattern = /^(?<layer_name>.+) #(?<number>\d+)\s*$/
+
       while layers.keys.include? layer.name
         layer.name = "#{layer.name} #1" unless layer.name =~ name_pattern
         layer.name.match(name_pattern) do |md|

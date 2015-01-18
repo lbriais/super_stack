@@ -71,16 +71,6 @@ describe SuperStack::Manager do
     expect(subject.layers.keys[1] == "#{SuperStack::Layer::DEFAULT_LAYER_NAME} #2").to be_truthy
   end
 
-  it 'should allow the same layer to be added multiple times, automatically changing names' do
-    expect {subject.add_layer(layer1) }.not_to raise_error
-    expect {subject.add_layer(layer1) }.not_to raise_error
-    expect {subject.add_layer(layer1) }.not_to raise_error
-    expect(subject.layers.keys.count == 3).to be_truthy
-    expect(subject.layers.keys[0] == 'layer1').to be_truthy
-    expect(subject.layers.keys[1] == 'layer1 #2').to be_truthy
-    expect(subject.layers.keys[2] == 'layer1 #3').to be_truthy
-  end
-
   it 'should allow to reload all layers at once' do
     subject.add_layer layer1
     subject << {bar: :foo}
@@ -202,15 +192,72 @@ describe SuperStack::Manager do
     it 'should remain consistent regarding the write level' do
       subject.write_layer = :layer3
       expect(subject.write_layer == layer3).to be_truthy
-      subject[:pipo] = :bimbo
-      expect(layer3[:pipo] == :bimbo).to be_truthy
+      subject[:foo] = :bar
+      expect(layer3[:foo] == :bar).to be_truthy
       subject.remove_layer :layer3
-      expect(subject[:pipo] == :bimbo).to be_falsey
+      expect(subject[:foo] == :bar).to be_falsey
       expect(subject.write_layer).to be_nil
     end
 
   end
 
+  context 'when disabling a layer' do
 
+    subject {
+      s = SuperStack::Manager.new
+      s.add_layer layer1
+      s.add_layer layer2
+      s.add_layer layer3
+      s.add_layer layer4
+      s
+    }
+
+    it 'should not been taken in account in the merge' do
+      subject.disable_layer :layer3
+      expect(subject[:from_layer_3]).to be_nil
+      expect(subject[:from_layer_1]).not_to be_nil
+      expect(subject[:from_layer_2]).not_to be_nil
+      expect(subject[:from_layer_4]).not_to be_nil
+    end
+
+    it 'could be reactivated' do
+      subject.disable_layer :layer3
+      subject.enable_layer :layer3
+      expect(subject[:from_layer_3]).not_to be_nil
+      expect(subject[:from_layer_1]).not_to be_nil
+      expect(subject[:from_layer_2]).not_to be_nil
+      expect(subject[:from_layer_4]).not_to be_nil
+    end
+
+    context 'when enabling/disabling a layer which is the write layer' do
+      subject {
+        s = SuperStack::Manager.new
+        s.add_layer layer1
+        s.add_layer layer2
+        s.add_layer layer3
+        s.add_layer layer4
+        s.write_layer = :layer3
+        s
+      }
+      it 'should restore it as the write layer if re-enabled' do
+        subject.disable_layer :layer3
+        expect(subject.write_layer).to be_nil
+        subject.enable_layer :layer3
+        expect(subject.write_layer).to be layer3
+        expect {subject[:foo] = :bar}.not_to raise_error
+      end
+
+      it 'should not restore it as the write layer if another write layer has been set in between' do
+        subject.disable_layer :layer3
+        expect(subject.write_layer).to be_nil
+        subject.write_layer = :layer2
+        subject.enable_layer :layer3
+        expect(subject.write_layer).to be layer2
+        expect {subject[:foo] = :bar}.not_to raise_error
+      end
+    end
+
+
+  end
 
 end
