@@ -17,6 +17,7 @@ module SuperStack
 
     def write_layer=(layer_or_layer_name)
       layer = get_existing_layer layer_or_layer_name, 'Invalid write layer'
+      raise 'Cannot use a disabled layer as write layer' if layer.disabled?
       @previous_write_layer = nil
       @write_layer = layer
     end

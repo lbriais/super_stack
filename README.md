@@ -67,7 +67,7 @@ Layers can be populated from a file anytime using the `load` method:
 
 ```ruby
 layer = SuperStack::Layer.new.load 'a_file_somewhere'
-# Once loaded you can get the file name used to load the layed anytime
+# Once loaded you can get the file name used to load the layer anytime
 puts layer.file_name
 # And you can load or reload the layer
 layer.has_file? # => true

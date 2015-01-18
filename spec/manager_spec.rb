@@ -13,6 +13,11 @@ describe SuperStack::Manager do
       layer
     }
   end
+  let(:override) {
+    override = SuperStack::Layer.new
+    override.name = :override
+    override
+  }
 
 
   it 'should contain layers' do
@@ -85,45 +90,51 @@ describe SuperStack::Manager do
     expect(subject[:bar] == :foo).to be_truthy
   end
 
-  it 'should be possible to specify a write layer using its name or itself' do
-    override = SuperStack::Layer.new
-    override.name = :override
-    subject << override
-    subject << layer1
-    expect {subject.write_layer = :override}.not_to raise_error
-    expect {subject.write_layer = 'override'}.not_to raise_error
-    expect {subject.write_layer = override}.not_to raise_error
-  end
-
-  it 'should not be possible to modify if no write layer has been specified' do
+  it 'should not be possible to modify the manager if no write layer has been specified' do
     subject << layer1
     subject << layer2
     expect {subject[:foo] = :bar}.to raise_error
   end
 
-  it 'should push all modifications to the write layer' do
-    override = SuperStack::Layer.new
-    override.name = :override
-    subject << override
-    subject << layer1
-    subject.write_layer = override
-    expect {subject[:foo] = :bar}.not_to raise_error
-    expect(subject.layers['override'][:foo] == :bar).to be_truthy
-    expect(subject[:foo] == :bar).to be_truthy
-  end
+  context 'when specifying a write layer' do
+
+    it 'should be possible using its name or itself' do
+      subject << override
+      subject << layer1
+      expect {subject.write_layer = :override}.not_to raise_error
+      expect {subject.write_layer = 'override'}.not_to raise_error
+      expect {subject.write_layer = override}.not_to raise_error
+    end
+
+    it 'should push all modifications to the write layer' do
+      subject << override
+      subject << layer1
+      subject.write_layer = override
+      expect {subject[:foo] = :bar}.not_to raise_error
+      expect(subject.layers['override'][:foo] == :bar).to be_truthy
+      expect(subject[:foo] == :bar).to be_truthy
+    end
 
 
-  it 'should be possible to clear modifications' do
-    subject << layer1
-    override = SuperStack::Layer.new
-    override.name = :override
-    subject << override
-    subject.write_layer = override
-    subject[:something_modified] = :modified
-    expect(subject[:something_modified]).not_to be_nil
-    subject.reset
-    expect(subject[:something_modified]).to be_nil
+    it 'should be possible to clear modifications' do
+      subject << layer1
+      subject << override
+      subject.write_layer = override
+      subject[:something_modified] = :modified
+      expect(subject[:something_modified]).not_to be_nil
+      subject.reset
+      expect(subject[:something_modified]).to be_nil
+    end
+
+    it 'should not be possible to specify a disabled layer' do
+      subject << override
+      subject.write_layer = override
+      subject.disable_layer override
+      expect {subject.write_layer = override}.to raise_error
+    end
+
   end
+
 
 
   SuperStack::MergePolicies.list.each do |policy|
