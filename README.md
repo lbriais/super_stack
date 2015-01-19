@@ -39,10 +39,20 @@ the result of the merge of all layers as a hash. It will be done according to th
 policy chosen.
 
 You can directly access to a particular key of the resulting merging by simply doing `manager[:your_key]` like you would
-do with a hash. (`manager` itself has no `Hash` in its ancestors, whereas `manager[]` *is* actually a `Hash`).
+do with a regular `Hash`.
 
-**None of the layers is modified by the manager**.
+`SuperStack::Manager` itself has no `Hash` in its ancestors, whereas `SuperStack::Manager#[]` that you can access
+through `manager[]` *is* actually the `Hash` resulting of the merge of the layers).
 
+**None of the layers is modified by the manager**, although you can nevertheless access them with the
+`SuperStack::Manager#layers` method.
+
+```ruby
+manager = SuperStack::Manager.new
+puts manager.class # =>  SuperStack::Manager
+puts manager[].class # =>  Hash
+puts manager.layers.class # =>  Hash
+```
 
 ### Layers
 
@@ -90,7 +100,7 @@ manager.reload_layers
 ```
 
 Layers can of course be:
-* removed (using the manager's `remove_layer(layer_or_layer_name)` method).
+* Removed (using the manager's `remove_layer(layer_or_layer_name)` method).
 * Enabled or disabled (using the manager's `disable_layer(layer_or_layer_name)` and `enable_layer(layer_or_layer_name)`
   methods).
 
