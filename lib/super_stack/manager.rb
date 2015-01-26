@@ -24,7 +24,7 @@ module SuperStack
 
     def []=(key,value)
       raise 'No write layer specified' if write_layer.nil?
-      write_layer[key] = value
+      write_layer[key.to_s] = value
     end
 
     def [](filter=nil)
@@ -44,7 +44,9 @@ module SuperStack
         # Trick to return a bare hash
         {}.merge res
       else
-        res[filter]
+        value = res[filter]
+        value = res[filter.to_s] if filter.is_a? Symbol and value.nil?
+        value
       end
     end
 
