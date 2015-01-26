@@ -81,13 +81,13 @@ describe SuperStack::Manager do
     subject << {bar: :foo}
     subject.add_layer layer3
     subject.add_layer layer4
-    expect(subject[:foo] == :bar).to be_falsey
-    subject.layers['layer3'][:foo] = :bar
-    expect(subject[:foo] == :bar).to be_truthy
-    expect(subject[:bar] == :foo).to be_truthy
+    expect(subject[:foo]).not_to eq :bar
+    subject.layers['layer3']['foo'] = :bar
+    expect(subject[:foo]).to eq :bar
+    expect(subject[:bar]).to eq :foo
     expect {subject.reload_layers}.not_to raise_error
-    expect(subject[:foo] == :bar).to be_falsey
-    expect(subject[:bar] == :foo).to be_truthy
+    expect(subject[:foo]).not_to eq :bar
+    expect(subject[:bar]).to eq :foo
   end
 
   it 'should not be possible to modify the manager if no write layer has been specified' do
@@ -111,8 +111,9 @@ describe SuperStack::Manager do
       subject << layer1
       subject.write_layer = override
       expect {subject[:foo] = :bar}.not_to raise_error
-      expect(subject.layers['override'][:foo] == :bar).to be_truthy
-      expect(subject[:foo] == :bar).to be_truthy
+      expect(subject.layers['override']['foo']).to eq :bar
+      expect(subject[:foo]).to eq :bar
+      expect(subject['foo']).to eq :bar
     end
 
 
@@ -206,11 +207,12 @@ describe SuperStack::Manager do
 
     it 'should remain consistent regarding the write level' do
       subject.write_layer = :layer3
-      expect(subject.write_layer == layer3).to be_truthy
+      expect(subject.write_layer).to eq layer3
       subject[:foo] = :bar
-      expect(layer3[:foo] == :bar).to be_truthy
+      expect(layer3['foo']).to eq :bar
       subject.remove_layer :layer3
-      expect(subject[:foo] == :bar).to be_falsey
+      expect(subject[:foo]).not_to eq :bar
+      expect(subject['foo']).not_to eq :bar
       expect(subject.write_layer).to be_nil
     end
 
