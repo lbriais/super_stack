@@ -32,7 +32,7 @@ module SuperStack
       return [] if layers.empty?
       return layers[0] if layers.count == 1
       first_layer = layers.shift
-      first_layer = first_layer.disabled? ?  SuperStack::Layer.new : first_layer
+      first_layer = first_layer.disabled? ? SuperStack::Layer.new : first_layer
       res = layers.inject(first_layer) do |stack, layer|
         if layer.disabled?
           stack
