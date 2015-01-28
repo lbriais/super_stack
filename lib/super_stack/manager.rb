@@ -32,21 +32,20 @@ module SuperStack
       return [] if layers.empty?
       return layers[0] if layers.count == 1
       first_layer = layers.shift
+      first_layer = first_layer.disabled? ?  SuperStack::Layer.new : first_layer
       res = layers.inject(first_layer) do |stack, layer|
         if layer.disabled?
           stack
         else
           policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
-          policy_to_apply.merge stack, layer
+          policy_to_apply.merge stack, stringify_keys(layer)
         end
       end
       if filter.nil?
         # Trick to return a bare hash
         {}.merge res
       else
-        value = res[filter]
-        value = res[filter.to_s] if filter.is_a? Symbol and value.nil?
-        value
+        res[filter.to_s]
       end
     end
 
@@ -102,6 +101,14 @@ module SuperStack
     end
 
     private
+
+    def stringify_keys(hash)
+      hash.inject({}){|stringified_hash, (key, value)|
+        stringified_hash[key.to_s] = value
+        stringified_hash
+      }
+    end
+
 
     def get_existing_layer(layer_or_layer_name, error_message)
       layer_name = layer_or_layer_name.to_s if layer_or_layer_name.is_a? Symbol
