@@ -30,7 +30,7 @@ module SuperStack
     end
 
     def disable_source_auto_reload
-      self.source_auto_reload =h true
+      self.source_auto_reload = false
     end
 
     def name=(name)

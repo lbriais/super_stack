@@ -293,10 +293,6 @@ describe SuperStack::Manager do
       layer
     end
 
-    after(:all) do
-      source_file.close
-      source_file.unlink
-    end
 
     it 'should reflect any change applied to the source' do
       subject << synced_layer
@@ -304,7 +300,7 @@ describe SuperStack::Manager do
         f.puts 'extra_foo: extra_bar'
       end
       puts subject[].to_yaml
-      expect(subject['extra_foo']).to eq 'extra_bar'
+      expect(subject[:extra_foo]).to eq 'extra_bar'
     end
 
 

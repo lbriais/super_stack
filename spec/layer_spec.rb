@@ -18,6 +18,10 @@ describe SuperStack::Layer do
     expect(subject).to respond_to :enable_source_auto_reload
     expect(subject).to respond_to :disable_source_auto_reload
     expect(subject).to respond_to :source_auto_reload?
+    subject.enable_source_auto_reload
+    expect(subject.source_auto_reload?).to be_truthy
+    subject.disable_source_auto_reload
+    expect(subject.source_auto_reload?).to be_falsey
   end
 
   it 'could have its own merge policy' do
