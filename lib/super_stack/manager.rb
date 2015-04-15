@@ -30,7 +30,7 @@ module SuperStack
     def [](filter=nil)
       layers = to_a
       return [] if layers.empty?
-      return layers[0] if layers.count == 1
+      layers.each { |layer| layer.reload if layer.source_auto_reload?}
       first_layer = layers.shift
       first_layer = first_layer.disabled? ? SuperStack::Layer.new : first_layer
       res = layers.inject(first_layer) do |stack, layer|
