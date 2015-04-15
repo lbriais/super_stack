@@ -299,7 +299,6 @@ describe SuperStack::Manager do
       File.open(source_file, 'a') do |f|
         f.puts 'extra_foo: extra_bar'
       end
-      puts subject[].to_yaml
       expect(subject[:extra_foo]).to eq 'extra_bar'
     end
 
