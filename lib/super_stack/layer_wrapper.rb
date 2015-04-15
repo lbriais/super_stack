@@ -9,11 +9,28 @@ module SuperStack
     DEFAULT_LAYER_NAME = 'Unknown layer'
 
     attr_reader :file_name, :priority, :manager, :disabled
+    attr_writer :source_auto_reload
     alias_method :disabled?, :disabled
 
     def priority=(priority)
       raise 'invalid priority' unless priority.is_a? Numeric
       @priority = priority
+    end
+
+    def source_auto_reload
+      @source_auto_reload || false
+    end
+
+    def source_auto_reload?
+      self.source_auto_reload
+    end
+
+    def enable_source_auto_reload
+      self.source_auto_reload = true
+    end
+
+    def disable_source_auto_reload
+      self.source_auto_reload = false
     end
 
     def name=(name)
