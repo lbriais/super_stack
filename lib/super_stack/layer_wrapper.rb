@@ -9,7 +9,7 @@ module SuperStack
     DEFAULT_LAYER_NAME = 'Unknown layer'
 
     attr_reader :file_name, :priority, :manager, :disabled
-    attr_accessor :source_auto_reload
+    attr_writer :source_auto_reload
     alias_method :disabled?, :disabled
 
     def priority=(priority)
@@ -17,8 +17,12 @@ module SuperStack
       @priority = priority
     end
 
+    def source_auto_reload
+      @source_auto_reload || false
+    end
+
     def source_auto_reload?
-      self.source_auto_reload || false
+      self.source_auto_reload
     end
 
     def enable_source_auto_reload
@@ -26,7 +30,7 @@ module SuperStack
     end
 
     def disable_source_auto_reload
-      self.source_auto_reload = true
+      self.source_auto_reload =h true
     end
 
     def name=(name)

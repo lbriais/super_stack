@@ -1,8 +1,8 @@
 require 'spec_helper'
-
+require 'tempfile'
 
 describe SuperStack::Manager do
-  subject {SuperStack::Manager.new}
+  subject {described_class.new}
 
   (1..4).each do |layer_number|
     let("layer#{layer_number}".to_sym) {
@@ -272,6 +272,39 @@ describe SuperStack::Manager do
         expect(subject.write_layer).to be layer2
         expect {subject[:foo] = :bar}.not_to raise_error
       end
+    end
+
+
+  end
+
+  context 'when #enable_source_auto_reload is set on a layer' do
+    let(:source_file) do
+      f = Tempfile.new 'synced_test_config_file'
+      f.puts 'in_synced_config_file: foo'
+      f.close
+      f.path
+    end
+
+    let(:synced_layer) do
+      layer = SuperStack::Layer.new
+      layer.load source_file
+      layer.name = 'Synchronized layer'
+      layer.enable_source_auto_reload
+      layer
+    end
+
+    after(:all) do
+      source_file.close
+      source_file.unlink
+    end
+
+    it 'should reflect any change applied to the source' do
+      subject << synced_layer
+      File.open(source_file, 'a') do |f|
+        f.puts 'extra_foo: extra_bar'
+      end
+      puts subject[].to_yaml
+      expect(subject['extra_foo']).to eq 'extra_bar'
     end
 
 

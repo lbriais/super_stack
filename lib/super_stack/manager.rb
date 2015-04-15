@@ -30,6 +30,7 @@ module SuperStack
     def [](filter=nil)
       layers = to_a
       return [] if layers.empty?
+      layers.each { |layer| layer.reload if layer.source_auto_reload?}
       return layers[0] if layers.count == 1
       first_layer = layers.shift
       first_layer = first_layer.disabled? ? SuperStack::Layer.new : first_layer
@@ -37,7 +38,7 @@ module SuperStack
         if layer.disabled?
           stack
         else
-          layer.reload if layer.source_auto_reload?
+
           policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
           policy_to_apply.merge stack, stringify_keys(layer)
         end
