@@ -16,6 +16,14 @@ module SuperStack
       @priority = priority
     end
 
+    def forced_reload?
+      @forced_reload || false
+    end
+
+    def forced_reload=(flag)
+      @forced_reload = flag
+    end
+
     def name=(name)
       @name = name.to_s
     end
