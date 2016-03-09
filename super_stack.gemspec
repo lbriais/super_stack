@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec'
 
   spec.add_dependency 'deep_merge'
-
-
+  spec.add_dependency 'psych', '2.0.8'
 
 end
