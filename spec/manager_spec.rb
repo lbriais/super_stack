@@ -5,19 +5,20 @@ describe SuperStack::Manager do
   subject {described_class.new}
 
   (1..4).each do |layer_number|
-    let("layer#{layer_number}".to_sym) {
+    let("layer#{layer_number}".to_sym) do
       file_name = file_from_layer layer_number
       layer = SuperStack::Layer.new
       layer.load file_name
       layer.name = "layer#{layer_number}"
       layer
-    }
+    end
   end
-  let(:override) {
+
+  let(:override) do
     override = SuperStack::Layer.new
     override.name = :override
     override
-  }
+  end
 
 
   it 'should contain layers' do
@@ -76,13 +77,13 @@ describe SuperStack::Manager do
     expect(subject.layers.keys[1] == "#{SuperStack::Layer::DEFAULT_LAYER_NAME} #2").to be_truthy
   end
 
-  it 'should allow to reload all layers at once' do
+  it 'should provide a dynamic merge' do
     subject.add_layer layer1
     subject << {bar: :foo}
     subject.add_layer layer3
     subject.add_layer layer4
     expect(subject[:foo]).not_to eq :bar
-    subject.layers['layer3']['foo'] = :bar
+    subject.layers['layer3'][:foo] = :bar
     expect(subject[:foo]).to eq :bar
     expect(subject[:bar]).to eq :foo
     expect {subject.reload_layers}.not_to raise_error
@@ -111,9 +112,9 @@ describe SuperStack::Manager do
       subject << layer1
       subject.write_layer = override
       expect {subject[:foo] = :bar}.not_to raise_error
-      expect(subject.layers['override']['foo']).to eq :bar
+      expect(subject.layers['override'][:foo]).to eq :bar
       expect(subject[:foo]).to eq :bar
-      expect(subject['foo']).to eq :bar
+      expect(subject['foo']).not_to eq :bar
     end
 
 
@@ -147,7 +148,7 @@ describe SuperStack::Manager do
       subject.default_merge_policy = policy
       expect(subject[].is_a? Hash).to be_truthy
       policy == SuperStack::MergePolicies::KeepPolicy ?
-          expect(subject[:layer] == 'one').to(be_truthy) : expect(subject[:layer] == 'four').to(be_truthy)
+          expect(subject[:layer]).to(eq 'one') : expect(subject[:layer]).to(eq 'four')
     end
   end
 
@@ -209,10 +210,9 @@ describe SuperStack::Manager do
       subject.write_layer = :layer3
       expect(subject.write_layer).to eq layer3
       subject[:foo] = :bar
-      expect(layer3['foo']).to eq :bar
+      expect(layer3[:foo]).to eq :bar
       subject.remove_layer :layer3
       expect(subject[:foo]).not_to eq :bar
-      expect(subject['foo']).not_to eq :bar
       expect(subject.write_layer).to be_nil
     end
 
@@ -229,7 +229,7 @@ describe SuperStack::Manager do
       s
     }
 
-    it 'should not been taken in account in the merge' do
+    it 'should not be taken in account in the merge' do
       subject.disable_layer :layer3
       expect(subject[:from_layer_3]).to be_nil
       expect(subject[:from_layer_1]).not_to be_nil
@@ -297,7 +297,7 @@ describe SuperStack::Manager do
     it 'should reflect any change applied to the source' do
       subject << synced_layer
       File.open(source_file, 'a') do |f|
-        f.puts 'extra_foo: extra_bar'
+        f.puts ':extra_foo: extra_bar'
       end
       expect(subject[:extra_foo]).to eq 'extra_bar'
     end

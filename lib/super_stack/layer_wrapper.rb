@@ -76,10 +76,13 @@ module SuperStack
 
     private
 
+
+
+
     def load_from_yaml(file_name)
       begin
-        self.replace Hash[YAML::load(File.open(file_name)).map { |k, v| [k.to_s, v] }]
-
+        raw_content = File.open file_name
+        self.replace Hash[YAML::load(raw_content).map { |k, v| [k, v] }]
       rescue  NoMethodError => e
         # Empty file...
         raise "Invalid file '#{file_name}'" unless e.message =~ /false:FalseClass/
