@@ -88,7 +88,7 @@ module SuperStack
       if res
         self.replace Hash[res.map { |k, v| [k, v] }]
       else
-        raise "Invalid file '#{file_name}'" unless raw_content.empty?
+        raise "Invalid file content for '#{file_name}'" unless raw_content.empty?
         clear
       end
       @file_name = file_name
