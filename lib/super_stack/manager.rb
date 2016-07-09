@@ -42,8 +42,7 @@ module SuperStack
         end
       end
       if filter.nil?
-        # Trick to return a bare hash
-        {}.merge res
+        res.to_hash
       else
         res[filter]
       end
