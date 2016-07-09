@@ -38,7 +38,7 @@ module SuperStack
           stack
         else
           policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
-          policy_to_apply.merge stack, layer # stringify_keys(layer)
+          policy_to_apply.merge stack, layer
         end
       end
       if filter.nil?
@@ -100,13 +100,6 @@ module SuperStack
     end
 
     private
-
-    # def stringify_keys(hash)
-    #   hash.inject({}){|stringified_hash, (key, value)|
-    #     stringified_hash[key.to_s] = value
-    #     stringified_hash
-    #   }
-    # end
 
 
     def get_existing_layer(layer_or_layer_name, error_message)
