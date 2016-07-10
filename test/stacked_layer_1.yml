@@ -1,9 +1,9 @@
-layer: one
+:layer: one
 
-from_layer_1:
+:from_layer_1:
   stupid-data: stupid in one
 
-to-be-merged:
+:to-be-merged:
   name: from layer 1
   my-prop: property one
   my-array:

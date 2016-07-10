@@ -54,6 +54,26 @@ puts manager[].class # =>  Hash
 puts manager.layers.class # =>  Hash
 ```
 
+:warning: Versions prior to `1.0.0` were trying to give an indifferent access to the merged hash for strings
+and symbols, ie `manager[:an_entry]` was giving the same result as `manager['an_entry']`.
+
+This is clearly wrong and not consistent everywhere.
+__Starting with version `1.0.0` this is no more the case__. Nevertheless a compatibility mode is provided for 
+applications relying on the legacy mechanism, you just need to do:
+
+```ruby
+require 'super_stack'
+SuperStack.set_compatibility_mode
+```
+or alternatively, you can do:
+
+```ruby
+require 'super_stack/old'
+```
+which is equivalent.
+
+
+
 ### Layers
 
 Layers are actually simple hashes that include the `SuperStack::LayerWrapper` module. Therefore you can create a layer by
@@ -142,4 +162,3 @@ The alternative is to set the policy at the layer level using `merge_policy=`
 
 [DMG]:      https://rubygems.org/gems/deep_merge        "Deep Merge gem"
 [DMGithub]: https://github.com/danielsdeleo/deep_merge  "Deep Merge Github project"
-

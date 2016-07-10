@@ -74,15 +74,22 @@ module SuperStack
       hash.extend self
     end
 
+    def to_hash
+      # Trick to return a bare hash
+      {}.merge self
+    end
+
     private
 
-    def load_from_yaml(file_name)
-      begin
-        self.replace Hash[YAML::load(File.open(file_name)).map { |k, v| [k.to_s, v] }]
 
-      rescue  NoMethodError => e
-        # Empty file...
-        raise "Invalid file '#{file_name}'" unless e.message =~ /false:FalseClass/
+    def load_from_yaml(file_name)
+      raw_content = File.read file_name
+      res = YAML.load raw_content
+      if res
+        self.replace Hash[res.map { |k, v| [k, v] }]
+      else
+        raise "Invalid file content for '#{file_name}'" unless raw_content.empty?
+        clear
       end
       @file_name = file_name
     end

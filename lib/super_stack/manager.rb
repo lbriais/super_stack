@@ -24,7 +24,7 @@ module SuperStack
 
     def []=(key,value)
       raise 'No write layer specified' if write_layer.nil?
-      write_layer[key.to_s] = value
+      write_layer[key] = value
     end
 
     def [](filter=nil)
@@ -38,14 +38,13 @@ module SuperStack
           stack
         else
           policy_to_apply = layer.merge_policy.nil? ? default_merge_policy : layer.merge_policy
-          policy_to_apply.merge stack, stringify_keys(layer)
+          policy_to_apply.merge stack, layer
         end
       end
       if filter.nil?
-        # Trick to return a bare hash
-        {}.merge res
+        res.to_hash
       else
-        res[filter.to_s]
+        res[filter]
       end
     end
 
@@ -101,13 +100,6 @@ module SuperStack
     end
 
     private
-
-    def stringify_keys(hash)
-      hash.inject({}){|stringified_hash, (key, value)|
-        stringified_hash[key.to_s] = value
-        stringified_hash
-      }
-    end
 
 
     def get_existing_layer(layer_or_layer_name, error_message)

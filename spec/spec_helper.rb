@@ -16,6 +16,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'super_stack'
+SuperStack.set_compatibility_mode
 
 
 def file_from_layer(layer_number)
