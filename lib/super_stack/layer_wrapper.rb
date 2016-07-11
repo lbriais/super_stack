@@ -75,6 +75,7 @@ module SuperStack
       if SuperStack.compatibility_mode
         class << hash; include SuperStack::Compatibility::LayerWrapper; end
       end
+      hash
     end
 
     def to_hash
