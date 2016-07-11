@@ -71,7 +71,10 @@ module SuperStack
     end
 
     def self.from_hash(hash)
-      hash.extend self
+      class << hash; include SuperStack::LayerWrapper; end
+      if SuperStack.compatibility_mode
+        class << hash; include SuperStack::Compatibility::LayerWrapper; end
+      end
     end
 
     def to_hash

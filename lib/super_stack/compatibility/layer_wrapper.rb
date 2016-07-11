@@ -3,7 +3,6 @@ module SuperStack
 
     module LayerWrapper
 
-      private
 
       def load_from_yaml(file_name)
         begin

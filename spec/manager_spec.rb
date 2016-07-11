@@ -73,8 +73,8 @@ describe SuperStack::Manager do
     expect {subject.add_layer({}) }.not_to raise_error
     expect {subject.add_layer({}) }.not_to raise_error
     expect(subject.layers.keys.count == 2).to be_truthy
-    expect(subject.layers.keys[0] == SuperStack::Layer::DEFAULT_LAYER_NAME).to be_truthy
-    expect(subject.layers.keys[1] == "#{SuperStack::Layer::DEFAULT_LAYER_NAME} #2").to be_truthy
+    expect(subject.layers.keys[0] == SuperStack::LayerWrapper::DEFAULT_LAYER_NAME).to be_truthy
+    expect(subject.layers.keys[1] == "#{SuperStack::LayerWrapper::DEFAULT_LAYER_NAME} #2").to be_truthy
   end
 
   it 'should provide a dynamic merge' do
@@ -96,6 +96,13 @@ describe SuperStack::Manager do
     subject << layer2
     expect {subject[:foo] = :bar}.to raise_error
   end
+
+
+  it 'should differentiate symbols from strings' do
+    subject << layer1
+    expect(subject[:layer]).not_to eq subject['layer']
+  end
+
 
   context 'when specifying a write layer' do
 
@@ -302,6 +309,33 @@ describe SuperStack::Manager do
       expect(subject[:extra_foo]).to eq 'extra_bar'
     end
 
+
+  end
+
+
+  context 'when using compatibility mode' do
+
+    before(:all) do
+      SuperStack.compatibility_mode = true
+    end
+
+    after(:all) do
+      SuperStack.compatibility_mode = false
+    end
+
+    subject {
+      s = SuperStack::Manager.new
+      s.add_layer layer1
+      s
+    }
+
+    it 'should not differentiate symbols from strings (for root nodes)' do
+      expect(subject[:layer]).to eq subject['layer']
+    end
+
+    it 'should differentiate symbols from strings (for non root nodes)' do
+      expect(subject['to-be-merged'][:name]).not_to eq subject['to-be-merged']['name']
+    end
 
   end
 
