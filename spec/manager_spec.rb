@@ -97,6 +97,13 @@ describe SuperStack::Manager do
     expect {subject[:foo] = :bar}.to raise_error
   end
 
+
+  it 'should differentiate symbols from strings' do
+    subject << layer1
+    expect(subject[:layer]).not_to eq subject['layer']
+  end
+
+
   context 'when specifying a write layer' do
 
     it 'should be possible using its name or itself' do
@@ -305,8 +312,30 @@ describe SuperStack::Manager do
 
   end
 
+
   context 'when using compatibility mode' do
 
+    before(:all) do
+      SuperStack.compatibility_mode = true
+    end
+
+    after(:all) do
+      SuperStack.compatibility_mode = false
+    end
+
+    subject {
+      s = SuperStack::Manager.new
+      s.add_layer layer1
+      s
+    }
+
+    it 'should not differentiate symbols from strings (for root nodes)' do
+      expect(subject[:layer]).to eq subject['layer']
+    end
+
+    it 'should differentiate symbols from strings (for non root nodes)' do
+      expect(subject['to-be-merged'][:name]).not_to eq subject['to-be-merged']['name']
+    end
 
   end
 
