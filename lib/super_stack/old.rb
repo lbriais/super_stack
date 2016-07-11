@@ -1,3 +1,3 @@
 require 'super_stack'
 
-SuperStack.set_compatibility_mode
+SuperStack.compatibility_mode = true

@@ -57,13 +57,13 @@ puts manager.layers.class # =>  Hash
 :warning: Versions prior to `1.0.0` were trying to give an indifferent access to the merged hash for strings
 and symbols, ie `manager[:an_entry]` was giving the same result as `manager['an_entry']`.
 
-This is clearly wrong and not consistent everywhere.
+This is clearly wrong and not consistent everywhere (only valid for the 'root' nodes).
 __Starting with version `1.0.0` this is no more the case__. Nevertheless a compatibility mode is provided for 
 applications relying on the legacy mechanism, you just need to do:
 
 ```ruby
 require 'super_stack'
-SuperStack.set_compatibility_mode
+SuperStack.compatibility_mode = true
 ```
 or alternatively, you can do:
 
