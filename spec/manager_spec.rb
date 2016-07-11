@@ -73,8 +73,8 @@ describe SuperStack::Manager do
     expect {subject.add_layer({}) }.not_to raise_error
     expect {subject.add_layer({}) }.not_to raise_error
     expect(subject.layers.keys.count == 2).to be_truthy
-    expect(subject.layers.keys[0] == SuperStack::Layer::DEFAULT_LAYER_NAME).to be_truthy
-    expect(subject.layers.keys[1] == "#{SuperStack::Layer::DEFAULT_LAYER_NAME} #2").to be_truthy
+    expect(subject.layers.keys[0] == SuperStack::LayerWrapper::DEFAULT_LAYER_NAME).to be_truthy
+    expect(subject.layers.keys[1] == "#{SuperStack::LayerWrapper::DEFAULT_LAYER_NAME} #2").to be_truthy
   end
 
   it 'should provide a dynamic merge' do

@@ -11,6 +11,7 @@ module SuperStack
     attr_reader :layers, :write_layer
 
     def initialize
+      self.extend SuperStack::Compatibility::Manager if SuperStack.compatibility_mode
       @layers = {}
       self.default_merge_policy = DEFAULT_MERGE_POLICY
     end

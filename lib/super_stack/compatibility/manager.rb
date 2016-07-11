@@ -25,7 +25,7 @@ module SuperStack
         if filter.nil?
           res.to_hash
         else
-          res[filter]
+          res[filter.to_s]
         end
       end
 

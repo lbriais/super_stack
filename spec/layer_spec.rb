@@ -10,7 +10,7 @@ describe SuperStack::Layer do
   end
 
   it 'has a default name' do
-    expect(subject.name == subject.class.const_get('DEFAULT_LAYER_NAME')).to be_truthy
+    expect(subject.name).not_to be_empty
   end
 
   it 'should have an auto-reload flag' do

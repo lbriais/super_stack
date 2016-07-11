@@ -71,7 +71,10 @@ module SuperStack
     end
 
     def self.from_hash(hash)
-      hash.extend self
+      class << hash; include SuperStack::LayerWrapper; end
+      if SuperStack.compatibility_mode
+        class << hash; include SuperStack::Compatibility::LayerWrapper; end
+      end
     end
 
     def to_hash
@@ -83,6 +86,7 @@ module SuperStack
 
 
     def load_from_yaml(file_name)
+      puts 'ORIGINAL IMPLEM'
       raw_content = File.read file_name
       res = YAML.load raw_content
       if res
