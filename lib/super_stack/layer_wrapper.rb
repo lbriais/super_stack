@@ -86,7 +86,6 @@ module SuperStack
 
 
     def load_from_yaml(file_name)
-      puts 'ORIGINAL IMPLEM'
       raw_content = File.read file_name
       res = YAML.load raw_content
       if res

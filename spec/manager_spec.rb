@@ -305,4 +305,9 @@ describe SuperStack::Manager do
 
   end
 
+  context 'when using compatibility mode' do
+
+
+  end
+
 end
