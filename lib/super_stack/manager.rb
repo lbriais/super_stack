@@ -77,6 +77,16 @@ module SuperStack
       layers.delete layer_name
     end
 
+    def clear_layers
+      layers.values.each do |layer|
+        layer = get_existing_layer layer_or_layer_name, 'Cannot remove unmanaged layer'
+        layer_name = layer.name
+        @write_layer = nil if layer == write_layer
+        layer.instance_variable_set :@manager, nil
+      end
+      layers.clear
+    end
+
     def disable_layer(layer_or_layer_name)
       layer = get_existing_layer layer_or_layer_name, 'Cannot disable unmanaged layer'
       if layer == write_layer
