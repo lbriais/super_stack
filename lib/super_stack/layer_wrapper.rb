@@ -57,7 +57,8 @@ module SuperStack
 
     def <=>(other)
       # For priorities, the smallest the higher
-      self.priority <=> other.priority
+      return nil unless other.respond_to? :priority
+      priority <=> other.priority
     end
 
     def inspect
