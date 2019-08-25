@@ -5,6 +5,8 @@
 The purpose of this gem is to provide a simple way to manage the merge of different
 hashes (layers) according to priority and different merge policies.
 
+**Moved to [Gitlab](https://gitlab.com/lbriais/super_stack/blob/master/README.md) because of MS-phobia.**
+
 ## Installation
 
 Add this line to your application's Gemfile:
